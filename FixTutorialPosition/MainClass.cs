@@ -1,26 +1,35 @@
-﻿using PlayerRoles;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
+﻿using System;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
+using PlayerRoles;
 using UnityEngine;
 
 namespace FixTutorialPosition
 {
-    public class MainClass
+    public class MainClass : Plugin<Config>
     {
-        [PluginEntryPoint("FixTutorialPosition", "1.0.0", "Teleport Tutorials to the tower again", "xNexusACS")]
-        public void Enable()
+        public override string Author { get; } = "xNexusACS";
+        public override string Name { get; } = "FixTutorialPosition";
+        public override string Prefix { get; } = "FixTutorialPosition";
+        public override Version Version { get; } = new Version(1, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
+        
+        public override void OnEnabled()
         {
-            EventManager.RegisterEvents(this);
+            Exiled.Events.Handlers.Player.ChangingRole += OnChangingRole;
+            base.OnEnabled();
         }
 
-        [PluginEvent(ServerEventType.PlayerChangeRole)]
-        public void OnPlayerChangeRole(Player player, PlayerRoleBase oldRole, RoleTypeId newRole,
-            RoleChangeReason changeReason)
+        public override void OnDisabled()
         {
-            if (newRole is RoleTypeId.Tutorial && oldRole.RoleTypeId is not RoleTypeId.Tutorial)
-                player.Position = new Vector3(40.297f, 1014.110f, -31.918f);
+            Exiled.Events.Handlers.Player.ChangingRole -= OnChangingRole;
+            base.OnDisabled();
+        }
+
+        private void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            if (ev.NewRole is RoleTypeId.Tutorial)
+                ev.Player.Position = new Vector3(40.297f, 1014.110f, -31.918f);
         }
     }
 }
