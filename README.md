@@ -1,8 +1,6 @@
 # FixTutorialPositions
 
-Fixes the tutorial position when changing the role to tutorial, with this plugin when you change your role to a tutorial, it change your position to the surface tower.
-
-- Exiled 6-beta1 Required
-- 12.0 beta Required
+## MOVED TO MY OTHER PLUGIN: EXILED UTILS
+- https://github.com/xNexus-ACS/ExiledUtils
 
 ## Change to the NwPluginAPI Branch to see the plugin compiled with NwPluginAPI
